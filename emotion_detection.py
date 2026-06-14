@@ -17,14 +17,9 @@ def emotion_detector(text_to_analyze):
     # Processing the response
     if response.status_code == 200:
         formatted_response = json.loads(response.text)
-        
-        # Extracting emotions from the response
         emotions = formatted_response['emotionPredictions'][0]['emotion']
-        
-        # Finding the dominant emotion (the one with the highest score)
         dominant_emotion = max(emotions, key=emotions.get)
         
-        # Formatting the final output
         result = {
             'anger': emotions['anger'],
             'disgust': emotions['disgust'],
@@ -32,6 +27,16 @@ def emotion_detector(text_to_analyze):
             'joy': emotions['joy'],
             'sadness': emotions['sadness'],
             'dominant_emotion': dominant_emotion
+        }
+    # Task 7: Handling Status Code 400 for blank inputs
+    elif response.status_code == 400:
+        result = {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
         }
     else:
         result = None
